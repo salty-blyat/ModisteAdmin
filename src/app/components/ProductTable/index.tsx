@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 // Import antd components
-import { Button, Form, Image, Input, InputNumber, Modal, Select, Spin, Table, Upload, message } from 'antd';
+import { Button, Card, Form, Image, Input, InputNumber, Modal, Select, Spin, Table, Upload, message } from 'antd';
 
 // Import antd icons
 import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
@@ -25,6 +25,9 @@ interface Product {
     image_url: string;
     category_name?: string; // Make it optional if necessary
 }
+const truncateDescription = (description: string, maxLength: number) => {
+    return description.length > maxLength ? description.substring(0, maxLength) + '...' : description;
+};
 
 // Define columns for the table
 const columns = [
@@ -32,6 +35,7 @@ const columns = [
         title: 'ID',
         dataIndex: 'id',
         key: 'id',
+        sorter: (a: Product, b: Product) => a.id - b.id, // Sort function for the "ID" column
     },
     {
         title: 'Image',
@@ -45,11 +49,13 @@ const columns = [
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
+        sorter: (a: Product, b: Product) => a.name.localeCompare(b.name), // Sort function for the "Name" column
     },
     {
         title: 'Price',
         dataIndex: 'price',
         key: 'price',
+        sorter: (a: Product, b: Product) => a.price - b.price, // Sort function for the "ID" column
     },
     {
         title: 'Category',
@@ -60,20 +66,19 @@ const columns = [
         title: 'Description',
         dataIndex: 'description',
         key: 'description',
-        render: (description: string) => <span className='text-ellipsis line-clamp-2'>{description}</span>
+        render: (description: string) => (
+            <div>
+                <span className='text-ellipsis line-clamp-1'>
+                    {truncateDescription(description, 20)}
+                </span>
+            </div>
+        ),
     },
     {
         title: <span className='text-nowrap'>In Stock</span>,
         dataIndex: 'inStock',
         key: 'inStock',
-    },
-    {
-        title: 'Action',
-        key: 'action',
-        render: () => (
-            <Button type="link">Edit</Button>
-        ),
-    },
+    }
 ];
 
 // Define ProductTable component
@@ -100,6 +105,17 @@ const ProductTable = () => {
         fetchProducts();
     }, []);
 
+
+    const handleSort = (key: string, order: 'ascend' | 'descend' | null) => {
+        const sortedProducts = [...products].sort((a, b) => {
+            if (order === 'ascend') {
+                return a[key] < b[key] ? -1 : 1;
+            } else {
+                return a[key] > b[key] ? -1 : 1;
+            }
+        });
+        setProducts(sortedProducts);
+    };
     // Function to fetch products from the backend API
     const fetchProducts = async () => {
         try {
@@ -312,15 +328,21 @@ const ProductTable = () => {
             <div className="overflow-auto">
                 <div className="container px-4 my-5">
                     <div className='flex mb-4 justify-between items-baseline'>
-                        <h1 className='text-xl'>Products</h1>
-                        <button
-                            className='flex flex-col justify-center items-center ml-auto bg-transparent size-24 border text-balance hover:bg-opacity-75'
-                            onClick={showModal}>
-                            <PlusOutlined className="text-xl" />
-                            Add Product
-                        </button>
+
+
                     </div>
-                    <Table className='bg-slate-100 rounded-md border' columns={columns} dataSource={products} />
+                    <Card
+                        title="Products"
+                        extra={
+                            <Button
+                                icon={<PlusOutlined />}
+                                type='default'
+                                onClick={showModal}>
+                                Add Product
+                            </Button>}
+                        style={{ width: 'max-content' }}>
+                        <Table className='bg-slate-100 rounded-md border' columns={columns} dataSource={products} />
+                    </Card>
                 </div>
             </div>
         </>

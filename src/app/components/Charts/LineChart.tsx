@@ -11,12 +11,20 @@ import {
 } from 'chart.js';
 import { Line } from "react-chartjs-2";
 import axios from 'axios';
-import { DatePicker } from "antd";
-import moment, { Moment } from 'moment';
+import { Card, DatePicker } from "antd";
+import { Moment } from 'moment';
+
+
+interface Product {
+    product_name: string;
+    product_price: number;
+    product_discount: number;
+}
+
 interface Order {
-    total_quantity_sold: number; // Adjust the type as per your actual data
-    total_revenue: number; // Adjust the type as per your actual data
-    // Add other properties if needed
+    total_quantity_sold: number;
+    total_revenue: number;
+    products: Product[];
 }
 
 ChartJS.register(
@@ -28,15 +36,18 @@ ChartJS.register(
     Tooltip,
     Legend
 );
+const currentDate = new Date();
+const currentYear = currentDate.getFullYear();
+const currentMonth = currentDate.getMonth() + 1;
 
 export default function LineChart() {
     const [orders, setOrders] = useState<Order[]>([]);
-    const [year, setYear] = useState(2024);
-    const [month, setMonth] = useState(5);
+    const [year, setYear] = useState(currentYear);
+    const [month, setMonth] = useState(currentMonth);
     const labels = ["Total Sales", "Total Profit"]
     const data1 = orders.map(order => order.total_quantity_sold);
     const data2 = orders.map(order => order.total_revenue);
-
+    console.log(orders)
     useEffect(() => {
         fetchData();
     }, [year, month]);
@@ -69,17 +80,23 @@ export default function LineChart() {
             {
                 label: 'Total Sales',
                 data: data1,
-                borderColor: 'rgb(255, 99, 132)',
-                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                backgroundColor: 'green',
             },
             {
                 label: 'Total Profit',
                 data: data2,
-                borderColor: 'rgb(53, 162, 235)',
-                backgroundColor: 'rgba(53, 162, 235, 0.5)',
+                backgroundColor: 'blue',
             },
         ],
     };
+
+    // Loop through all orders and sum the product prices
+    const totalSales = orders.reduce((total, order) => {
+        // Calculate the total revenue for each product in the order
+        const orderTotal = order.total_revenue;
+        return total + orderTotal;
+    }, 0);
+
 
 
     const options = {
@@ -92,15 +109,32 @@ export default function LineChart() {
     };
 
     return (
-        <div className="grid border p-5 rounded-md gap-y-2 max-w-md ">
-            <div className="flex">
-                <span>Sales Monthly </span>
-                <div className="flex justify-end gap-x-5">
-                    <DatePicker placeholder={String(month)} picker="month" onChange={handleMonthChange} />
-                    <DatePicker placeholder={String(year)} picker="year" onChange={handleYearChange} />
-                </div>
-            </div>
-            <Line data={data} options={options} />
-        </div>
+        <Card
+            style={{ width: 'max-content' }}
+            title="Sale Monthly"
+            extra={
+                <>
+                    <DatePicker
+                        className="mr-2 w-16 "
+                        placeholder={String(month)}
+                        picker="month"
+                        onChange={handleMonthChange}
+                    />
+                    <DatePicker
+                        className="w-20"
+                        placeholder={String(year)}
+                        picker="year"
+                        onChange={handleYearChange}
+                    />
+                </>
+            }
+            actions={[
+                <>
+                    <span className='text-black'>Total Sales: </span>
+                    <span className='text-green-900 font-semibold'>${totalSales.toFixed(2)}</span>
+                </>]} >
+
+            <Line className="max-w-2xl" data={data} options={options} />
+        </Card >
     );
 }

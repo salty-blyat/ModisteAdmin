@@ -1,5 +1,5 @@
 'use client'
-import { DatePicker } from 'antd';
+import { Card, DatePicker } from 'antd';
 import axios from 'axios';
 import {
     BarElement,
@@ -81,28 +81,33 @@ export function BarChart() {
             {
                 label: 'Sales',
                 data: dataset1Data,
-                color: 'blue',
-                backgroundColor: 'rgba(255, 99, 132)',
+                backgroundColor: 'rgba(0, 0, 0)',
             },
         ],
     };
 
     return (
-        <div className=" border p-5 rounded-md max-w-md">
-            <div className='flex justify-between mb-4'>
-                <p>Sales Monthly </p>
+        <Card
+            className='p-0'
+            style={{ width: 'max-content' }}
+            title="Sale Annually"
+            extra={
                 <DatePicker
-                    placeholder={selectedYear.toString()}
+                    className='w-20'
+                    placeholder={String(selectedYear)}
                     picker="year"
                     onChange={handleYearChange}
                 />
+            }
+            actions={[
+                <>
+                    <span className='text-black'>Total annually: </span>
+                    <span className='font-semibold text-gray-900'> $ {annualTotalSales}</span>
+                </>]}>
+            <Bar className='max-w-2xl' options={options} data={data} />
 
-            </div>
 
-            <Bar options={options} data={data} />
-            <div className='text-end text-black'>
-                <p>Total annually $ {annualTotalSales}</p>
-            </div>
-        </div>
+
+        </Card >
     );
 }

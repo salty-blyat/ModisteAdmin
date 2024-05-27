@@ -1,7 +1,7 @@
 'use client'
 import { UserOutlined } from '@ant-design/icons';
 import type { TableColumnsType } from 'antd';
-import { Image, Table } from 'antd';
+import { Card, Image, Table } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
@@ -62,7 +62,7 @@ const CustomerTable: React.FC = () => {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const url = process.env.NEXT_PUBLIC_GET_USER ?? ''; 
+            const url = process.env.NEXT_PUBLIC_GET_USER ?? '';
             const response = await axios.get<any[]>(url);
             setUsers(response.data.map((user: any, index: number) => ({
                 key: index,
@@ -90,8 +90,7 @@ const CustomerTable: React.FC = () => {
     };
 
     return (
-        <>
-            <span className='mb-4'>User List</span>
+        <Card title="User List" style={{ width: 'max-content' }}>
             <Table
                 className='border rounded-md'
                 columns={columns}
@@ -99,7 +98,7 @@ const CustomerTable: React.FC = () => {
                 loading={loading}
                 pagination={{ itemRender }}
             />
-        </>
+        </Card>
     );
 };
 
