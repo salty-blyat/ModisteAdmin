@@ -47,7 +47,7 @@ export default function LineChart() {
     const labels = ["Total Sales", "Total Profit"]
     const data1 = orders.map(order => order.total_quantity_sold);
     const data2 = orders.map(order => order.total_revenue);
-    console.log(orders)
+ 
     useEffect(() => {
         fetchData();
     }, [year, month]);
@@ -107,8 +107,7 @@ export default function LineChart() {
             }
         },
     };
-
-    console.log('orders', orders)
+ 
     return (
         <Card
             style={{ width: 'max-content' }}

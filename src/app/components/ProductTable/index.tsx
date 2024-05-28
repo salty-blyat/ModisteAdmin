@@ -201,8 +201,7 @@ const ProductTable = () => {
 
             if (response.ok) {
                 const data = await response.json();
-                const imageUrl = data.data.url;
-                console.log('Image uploaded successfully:', imageUrl);
+                const imageUrl = data.data.url; 
                 return imageUrl;
             } else {
                 console.error('Failed to upload image to ImgBB');

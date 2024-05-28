@@ -30,7 +30,6 @@ ChartJS.register(
 
 export const options = {
     responsive: true,
-
 };
 
 export function BarChart() {
@@ -57,8 +56,7 @@ export function BarChart() {
         const GetSales = process.env.NEXT_PUBLIC_GET_SALE;
         axios.get(`${GetSales}${year}`)
             .then(response => {
-                const { data } = response;
-                console.log("Sales data fetched successfully:", data);
+                const { data } = response; 
                 setSalesData(data);
             })
             .catch(error => {
@@ -69,12 +67,12 @@ export function BarChart() {
     if (!salesData) {
         return <div>Loading...</div>;
     }
-
+    
     const { annualTotalSales, monthlySales } = salesData;
 
     const labels = monthlySales.map((monthData: MonthlySalesData) => monthData.month);
     const dataset1Data = monthlySales.map((monthData: MonthlySalesData) => monthData.total_sales);
-
+ 
     const data = {
         labels,
         datasets: [
