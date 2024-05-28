@@ -1,3 +1,6 @@
+
+
+
 export interface ProductProps {
     id: number;
     name: string;
@@ -8,6 +11,5 @@ export interface ProductProps {
     inStock: number;
     num_purchases: number;
     created_at: string; // Date string in ISO format
-    discount?: number | null; // Optional discount value
-    reviews: Review[]; // Array of reviews (assuming Review is another interface)
+    discount?: number | null; // Optional discount value 
   }

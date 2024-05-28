@@ -8,7 +8,8 @@ const TotalRevenue = () => {
     useEffect(() => {
         const fetchTotalRevenue = async () => {
             try {
-                const response = await axios.get('http://localhost:4000/api/getRevenueToday');
+                const url = process.env.NEXT_PUBLIC_GET_REV_TODAY || ''
+                const response = await axios.get(url);
                 const { total_revenue } = response.data;
                 setTotalRevenue(total_revenue);
             } catch (error) {

@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
+import { Card, DatePicker } from "antd";
+import axios from 'axios';
 import {
-    Chart as ChartJS,
     CategoryScale,
+    Chart as ChartJS,
+    Legend,
+    LineElement,
     LinearScale,
     PointElement,
-    LineElement,
     Title,
     Tooltip,
-    Legend,
 } from 'chart.js';
-import { Line } from "react-chartjs-2";
-import axios from 'axios';
-import { Card, DatePicker } from "antd";
 import { Moment } from 'moment';
+import { useEffect, useState } from "react";
+import { Line } from "react-chartjs-2";
 
 
 interface Product {
@@ -108,6 +108,7 @@ export default function LineChart() {
         },
     };
 
+    console.log('orders', orders)
     return (
         <Card
             style={{ width: 'max-content' }}

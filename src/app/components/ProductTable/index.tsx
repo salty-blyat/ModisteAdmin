@@ -106,16 +106,7 @@ const ProductTable = () => {
     }, []);
 
 
-    const handleSort = (key: string, order: 'ascend' | 'descend' | null) => {
-        const sortedProducts = [...products].sort((a, b) => {
-            if (order === 'ascend') {
-                return a[key] < b[key] ? -1 : 1;
-            } else {
-                return a[key] > b[key] ? -1 : 1;
-            }
-        });
-        setProducts(sortedProducts);
-    };
+    
     // Function to fetch products from the backend API
     const fetchProducts = async () => {
         try {
