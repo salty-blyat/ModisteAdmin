@@ -47,7 +47,7 @@ const WeeklyRevenue = () => {
             const { week, month, year } = selectedDate;
             const url = process.env.NEXT_PUBLIC_GET_REV_WEEKLY;
             const response = await axios.get(`${url}/${week}/${month}/${year}`);
-            console.log(response.data);
+   
             setData(response.data);
         } catch (error) {
             console.error('Error fetching revenue data:', error);
@@ -100,8 +100,7 @@ const WeeklyRevenue = () => {
         data[4].Friday.totalRevenue,
         data[5].Saturday.totalRevenue,
         data[6].Sunday.totalRevenue
-    ];
-    console.log(dataset1Data)
+    ]; 
     const DataSet = {
         labels,
         datasets: [
