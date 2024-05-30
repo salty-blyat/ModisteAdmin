@@ -1,4 +1,4 @@
-import { Card, DatePicker } from "antd";
+import { Card, DatePicker, Skeleton } from "antd";
 import axios from 'axios';
 import {
     CategoryScale,
@@ -109,32 +109,40 @@ export default function LineChart() {
     };
 
     return (
-        <Card
-            title="Sale Monthly"
-            extra={
-                <>
-                    <DatePicker
-                        className="mr-2 w-16 "
-                        placeholder={String(month)}
-                        picker="month"
-                        onChange={handleMonthChange}
-                    />
-                    <DatePicker
-                        className="w-20"
-                        placeholder={String(year)}
-                        picker="year"
-                        onChange={handleYearChange}
-                    />
-                </>
+        <>
+            {orders !== null ?
+                <Card
+                    title="Sale Monthly"
+                    extra={
+                        <>
+                            <DatePicker
+                                className="mr-2 w-16 "
+                                placeholder={String(month)}
+                                picker="month"
+                                onChange={handleMonthChange}
+                            />
+                            <DatePicker
+                                className="w-20"
+                                placeholder={String(year)}
+                                picker="year"
+                                onChange={handleYearChange}
+                            />
+                        </>
+                    }
+                    actions={[
+                        <>
+                            <span className='text-black'>Total Sales: </span>
+                            <span className='text-green-900 font-semibold'>${totalSales.toFixed(2)}</span>
+                        </>]} >
+                    <div className='flex justify-center items-center min-h-40  '>
+                        <Line data={data} options={options} />
+                    </div>
+                </Card >
+                :
+                <Card>
+                    <Skeleton paragraph={{ rows: 7 }} active />
+                </Card>
             }
-            actions={[
-                <>
-                    <span className='text-black'>Total Sales: </span>
-                    <span className='text-green-900 font-semibold'>${totalSales.toFixed(2)}</span>
-                </>]} >
-            <div className='flex justify-center items-center min-h-40  '>
-                <Line data={data} options={options} />
-            </div>
-        </Card >
+        </>
     );
 }

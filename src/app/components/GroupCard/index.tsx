@@ -26,13 +26,13 @@ const GroupCard = () => {
     const memoizedLeastSaleProduct = useMemo(() => leastSaleProduct, [leastSaleProduct]);
 
     return (
-        <Card title="Product Performance">
-            <div className="grid sm:grid-cols-2">
+        <>
+            <h2 className='text-base font-medium mb-2'>Product Performance</h2>
+            <div className=" grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <SquareCard product={memoizedTopSaleProduct} />
-
                 <SquareCard product={memoizedLeastSaleProduct} />
             </div>
-        </Card>
+        </>
     )
 }
 

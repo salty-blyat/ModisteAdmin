@@ -1,5 +1,5 @@
 'use client'
-import { Card, DatePicker } from 'antd';
+import { Card, DatePicker, Skeleton } from 'antd';
 import axios from 'axios';
 import {
     BarElement,
@@ -86,28 +86,31 @@ export function BarChart() {
     };
 
     return (
-        <Card
-
-            title="Sale Annually"
-            extra={
-                <DatePicker
-                    className='w-20'
-                    placeholder={String(selectedYear)}
-                    picker="year"
-                    onChange={handleYearChange}
-                />
+        <>
+            {salesData !== null ?
+                <Card
+                    title="Sale Annually"
+                    extra={
+                        <DatePicker
+                            className='w-20'
+                            placeholder={String(selectedYear)}
+                            picker="year"
+                            onChange={handleYearChange}
+                        />
+                    }
+                    actions={[
+                        <>
+                            <span className='text-black'>Total annually: </span>
+                            <span className='font-semibold text-gray-900'> $ {annualTotalSales}</span>
+                        </>]}>
+                    <div className='flex justify-center items-center min-h-40  '>
+                        <Bar options={options} data={data} />
+                    </div>
+                </Card >
+                : <Card>
+                    <Skeleton active paragraph={{ rows: 7 }} />
+                </Card>
             }
-            actions={[
-                <>
-                    <span className='text-black'>Total annually: </span>
-                    <span className='font-semibold text-gray-900'> $ {annualTotalSales}</span>
-                </>]}>
-            <div className='flex justify-center items-center min-h-40  '>
-                <Bar options={options} data={data} />
-            </div>
-
-
-
-        </Card >
+        </>
     );
 }

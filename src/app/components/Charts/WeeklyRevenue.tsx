@@ -1,4 +1,4 @@
-import { Card, DatePicker, DatePickerProps } from 'antd';
+import { Card, DatePicker, DatePickerProps, Skeleton } from 'antd';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import moment from 'moment';
@@ -118,26 +118,34 @@ const WeeklyRevenue = () => {
     };
     const totalWeeklyRevenue = dataset1Data.reduce((acc, rev) => acc + rev, 0);
     return (
-        <Card
-            title="Weekly Revenue"
-            extra={
-                <DatePicker
-                    className='w-32'
-                    placeholder={`${curweek}/${curmonth}/${curyear}`}
-                    picker="week"
-                    onChange={onChange}
-                />
+        <>
+            {data !== null ?
+                <Card
+                    title="Weekly Revenue"
+                    extra={
+                        <DatePicker
+                            className='w-32'
+                            placeholder={`${curweek}/${curmonth}/${curyear}`}
+                            picker="week"
+                            onChange={onChange}
+                        />
+                    }
+                    actions={[
+                        <>
+                            <span className='text-black'>Total weekly revenue: </span>
+                            <span className='font-semibold text-gray-900'>${totalWeeklyRevenue}
+                            </span>
+                        </>]}>
+                    <div className='flex justify-center items-center min-h-40  '>
+                        <Bar options={options} data={DataSet} />
+                    </div>
+                </Card>
+                :
+                <Card>
+                    <Skeleton paragraph={{ rows: 7 }} active />
+                </Card>
             }
-            actions={[
-                <>
-                    <span className='text-black'>Total weekly revenue: </span>
-                    <span className='font-semibold text-gray-900'>${totalWeeklyRevenue}
-                    </span>
-                </>]}>
-            <div className='flex justify-center items-center min-h-40  '>
-                <Bar options={options} data={DataSet} />
-            </div>
-        </Card>
+        </>
     );
 };
 

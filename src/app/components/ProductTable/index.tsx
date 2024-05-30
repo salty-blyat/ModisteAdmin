@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 // Import antd components
-import { Button, Card, Form, Image, Input, InputNumber, Modal, Select, Spin, Table, Upload, message } from 'antd';
+import { Button, Card, Form, Image, Input, InputNumber, Modal, Select, Skeleton, Spin, Table, Upload, message } from 'antd';
 
 // Import antd icons
 import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
@@ -55,7 +55,7 @@ const columns = [
         title: 'Price',
         dataIndex: 'price',
         key: 'price',
-        sorter: (a: Product, b: Product) => a.price - b.price, // Sort function for the "ID" column
+        sorter: (a: Product, b: Product) => (a.price - b.price).toFixed(2), // Sort function for the "ID" column
     },
     {
         title: 'Category',
@@ -315,26 +315,27 @@ const ProductTable = () => {
                     </Spin>
                 </Form>
             </Modal>
+            {products !== null ?
+                <div>
+                    <div className='flex justify-between mb-4'>
+                        <h2 className='text-base font-medium mb-2'>Inventory</h2>
+                        <Button
+                            icon={<PlusOutlined />}
+                            type='dashed'
+                            onClick={showModal}>
+                            Add Product
+                        </Button>
+                    </div>
+                    <Table
+                        className='bg-slate-100 rounded-md border overflow-x-auto w-[26rem] sm:w-auto'
+                        rowKey="id"
+                        scroll={{ x: true }}
+                        columns={columns}
+                        dataSource={products} />
+                </div >
+                : <Card><Skeleton paragraph={{ rows: 7 }} active /></Card>
 
-            <div>
-                <div className='flex justify-between mb-4'>
-                    <p>Inventory</p>
-                    <Button
-                        icon={<PlusOutlined />}
-                        type='default'
-                        onClick={showModal}>
-                        Add Product
-                    </Button>
-                </div>
-                <Table
-                    className='bg-slate-100 rounded-md border overflow-x-auto'
-                    rowKey="id"
-                    scroll={{ x: true }}
-                    columns={columns}
-                    dataSource={products} />
-            </div >
-
-
+            }
         </>
     );
 };

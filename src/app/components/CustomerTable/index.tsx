@@ -1,7 +1,7 @@
 'use client'
 import { UserOutlined } from '@ant-design/icons';
 import type { TableColumnsType } from 'antd';
-import { Card, Image, Table } from 'antd';
+import { Card, Image, Skeleton, Table } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
@@ -17,7 +17,7 @@ interface DataType {
 
 const columns: TableColumnsType<DataType> = [
     {
-        title: 'User ID',
+        title: 'ID',
         dataIndex: 'user_id',
     },
     {
@@ -36,11 +36,11 @@ const columns: TableColumnsType<DataType> = [
         ),
     },
     {
-        title: 'User Name',
+        title: 'Name',
         dataIndex: 'user_name',
     },
     {
-        title: 'User Role',
+        title: 'Role',
         dataIndex: 'user_role',
     },
     {
@@ -51,7 +51,6 @@ const columns: TableColumnsType<DataType> = [
 ];
 
 const CustomerTable: React.FC = () => {
-    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState<DataType[]>([]);
 
@@ -80,9 +79,6 @@ const CustomerTable: React.FC = () => {
         }
     };
 
-    const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-        setSelectedRowKeys(newSelectedRowKeys);
-    };
 
     // Custom item renderer for pagination
     const itemRender = (current: number, type: string, originalElement: React.ReactNode) => {
@@ -91,14 +87,18 @@ const CustomerTable: React.FC = () => {
 
     return (
         <div>
-            <Table
-                className='border rounded-md'
-                columns={columns}
-                scroll={{ x: true }}
-                dataSource={users}
-                loading={loading}
-                pagination={{ itemRender }}
-            />
+            <h2 className='text-base font-medium mb-2'>Customer List</h2>
+            {users !== null ?
+                <Table
+                    className='rounded-md border w-[26rem] sm:w-auto'
+                    columns={columns}
+                    scroll={{ x: true }}
+                    dataSource={users}
+                    loading={loading}
+                    pagination={{ itemRender }}
+                />
+                : <Card><Skeleton paragraph={{ rows: 7 }} active /></Card>
+            }
         </div>
     );
 };

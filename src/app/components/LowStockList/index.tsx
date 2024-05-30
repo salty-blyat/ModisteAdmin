@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ProductProps } from '../Types/product';
-import { Card, Table, Tag } from 'antd';
+import { Card, Skeleton, Table, Tag } from 'antd';
 
 const LowStockList: React.FC = () => {
     const [products, setProducts] = useState<ProductProps[]>([]);
@@ -62,9 +62,10 @@ const LowStockList: React.FC = () => {
         <div>
             {products.length > 0 ? (
                 <div>
+                    <h2 className='text-base font-medium mb-2'>Low Stock Products</h2>
                     <Table
                         dataSource={products}
-                        className='rounded-md border overflow-x-auto'
+                        className='rounded-md border w-[26rem] sm:w-auto'
                         columns={columns}
                         rowKey="id"
                         scroll={{ x: true }} // Enable horizontal scrolling
@@ -72,7 +73,9 @@ const LowStockList: React.FC = () => {
                 </div>
 
             ) : (
-                <p>All products have sufficient stock.</p>
+                <Card>
+                    <Skeleton paragraph={{ rows: 7 }} active />
+                </Card>
             )}
         </div>
     );
