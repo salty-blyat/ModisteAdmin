@@ -55,7 +55,7 @@ const columns = [
         title: 'Price',
         dataIndex: 'price',
         key: 'price',
-        sorter: (a: Product, b: Product) => (a.price - b.price).toFixed(2), // Sort function for the "ID" column
+        sorter: (a: Product, b: Product) => a.price - b.price, // Sort function for the "ID" column
     },
     {
         title: 'Category',
