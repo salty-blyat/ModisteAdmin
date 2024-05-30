@@ -24,14 +24,12 @@ const LowStockList: React.FC = () => {
             dataIndex: 'id',
             key: 'id',
             sorter: (a: ProductProps, b: ProductProps) => a.id - b.id, // Sort function for the "ID" column
-
         },
         {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
             sorter: (a: ProductProps, b: ProductProps) => a.name.localeCompare(b.name), // Sort function for the "Name" column
-
         },
         {
             title: 'Category',
@@ -43,7 +41,6 @@ const LowStockList: React.FC = () => {
             dataIndex: 'inStock',
             key: 'inStock',
             sorter: (a: ProductProps, b: ProductProps) => a.inStock - b.inStock, // Sort function for the "ID" column
-
         },
         {
             title: 'Status',
@@ -62,16 +59,22 @@ const LowStockList: React.FC = () => {
     ];
 
     return (
-        <>
-            <Card title="Low Stock Products" style={{ width: 'max-content' }}>
-                {products.length > 0 ? (
-                    <Table dataSource={products} className='bg-slate-100 rounded-md border' columns={columns} rowKey="id" />
-                ) : (
-                    <p>All products have sufficient stock.</p>
-                )
-                }
-            </Card>
-        </>
+        <div>
+            {products.length > 0 ? (
+                <div>
+                    <Table
+                        dataSource={products}
+                        className='rounded-md border overflow-x-auto'
+                        columns={columns}
+                        rowKey="id"
+                        scroll={{ x: true }} // Enable horizontal scrolling
+                    />
+                </div>
+
+            ) : (
+                <p>All products have sufficient stock.</p>
+            )}
+        </div>
     );
 }
 

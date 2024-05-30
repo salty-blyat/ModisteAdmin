@@ -1,6 +1,6 @@
 
 
-import { Alert, Card } from 'antd';
+import { Card } from 'antd';
 import axios from 'axios';
 import { useEffect, useMemo, useState } from 'react';
 import SquareCard from '../SquareCard';
@@ -26,20 +26,11 @@ const GroupCard = () => {
     const memoizedLeastSaleProduct = useMemo(() => leastSaleProduct, [leastSaleProduct]);
 
     return (
+        <Card title="Product Performance">
+            <div className="grid sm:grid-cols-2">
+                <SquareCard product={memoizedTopSaleProduct} />
 
-
-        <Card title="Product Performance" style={{ width: 'max-content' }}>
-            <div className="flex gap-x-2">
-                <Alert
-                    message="Top Sold Product"
-                    description={<SquareCard product={memoizedTopSaleProduct} />}
-                    type="success"
-                />
-                <Alert
-                    message="Least Sold Product"
-                    description={<SquareCard product={memoizedLeastSaleProduct} />}
-                    type="warning"
-                />
+                <SquareCard product={memoizedLeastSaleProduct} />
             </div>
         </Card>
     )

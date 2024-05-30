@@ -90,15 +90,16 @@ const CustomerTable: React.FC = () => {
     };
 
     return (
-        <Card title="User List" style={{ width: 'max-content' }}>
+        <div>
             <Table
                 className='border rounded-md'
                 columns={columns}
+                scroll={{ x: true }}
                 dataSource={users}
                 loading={loading}
                 pagination={{ itemRender }}
             />
-        </Card>
+        </div>
     );
 };
 

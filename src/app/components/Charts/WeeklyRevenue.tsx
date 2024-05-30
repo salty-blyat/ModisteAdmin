@@ -47,7 +47,7 @@ const WeeklyRevenue = () => {
             const { week, month, year } = selectedDate;
             const url = process.env.NEXT_PUBLIC_GET_REV_WEEKLY;
             const response = await axios.get(`${url}/${week}/${month}/${year}`);
-   
+
             setData(response.data);
         } catch (error) {
             console.error('Error fetching revenue data:', error);
@@ -100,7 +100,7 @@ const WeeklyRevenue = () => {
         data[4].Friday.totalRevenue,
         data[5].Saturday.totalRevenue,
         data[6].Sunday.totalRevenue
-    ]; 
+    ];
     const DataSet = {
         labels,
         datasets: [
@@ -119,8 +119,6 @@ const WeeklyRevenue = () => {
     const totalWeeklyRevenue = dataset1Data.reduce((acc, rev) => acc + rev, 0);
     return (
         <Card
-            className='p-0'
-            style={{ width: 'max-content' }}
             title="Weekly Revenue"
             extra={
                 <DatePicker
@@ -136,7 +134,9 @@ const WeeklyRevenue = () => {
                     <span className='font-semibold text-gray-900'>${totalWeeklyRevenue}
                     </span>
                 </>]}>
-            <Bar options={options} data={DataSet} />
+            <div className='flex justify-center items-center min-h-40  '>
+                <Bar options={options} data={DataSet} />
+            </div>
         </Card>
     );
 };

@@ -47,7 +47,7 @@ export default function LineChart() {
     const labels = ["Total Sales", "Total Profit"]
     const data1 = orders.map(order => order.total_quantity_sold);
     const data2 = orders.map(order => order.total_revenue);
- 
+
     useEffect(() => {
         fetchData();
     }, [year, month]);
@@ -107,10 +107,9 @@ export default function LineChart() {
             }
         },
     };
- 
+
     return (
         <Card
-            style={{ width: 'max-content' }}
             title="Sale Monthly"
             extra={
                 <>
@@ -133,8 +132,9 @@ export default function LineChart() {
                     <span className='text-black'>Total Sales: </span>
                     <span className='text-green-900 font-semibold'>${totalSales.toFixed(2)}</span>
                 </>]} >
-
-            <Line className="max-w-2xl" data={data} options={options} />
+            <div className='flex justify-center items-center min-h-40  '>
+                <Line data={data} options={options} />
+            </div>
         </Card >
     );
 }

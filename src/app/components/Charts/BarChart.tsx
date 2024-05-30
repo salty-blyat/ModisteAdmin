@@ -10,9 +10,10 @@ import {
     Title,
     Tooltip,
 } from 'chart.js';
-import { useEffect, useState } from 'react';
 import { Moment } from 'moment';
-import { Bar } from 'react-chartjs-2'
+import { useEffect, useState } from 'react';
+import { Bar } from 'react-chartjs-2';
+import Loading from '../Loading';
 interface MonthlySalesData {
     month: string; // Assuming month is a string, adjust if it's a number or another type
     total_sales: number; // Adjust the type as per your data
@@ -56,7 +57,7 @@ export function BarChart() {
         const GetSales = process.env.NEXT_PUBLIC_GET_SALE;
         axios.get(`${GetSales}${year}`)
             .then(response => {
-                const { data } = response; 
+                const { data } = response;
                 setSalesData(data);
             })
             .catch(error => {
@@ -65,14 +66,14 @@ export function BarChart() {
     };
 
     if (!salesData) {
-        return <div>Loading...</div>;
+        return <Loading />;
     }
-    
+
     const { annualTotalSales, monthlySales } = salesData;
 
     const labels = monthlySales.map((monthData: MonthlySalesData) => monthData.month);
     const dataset1Data = monthlySales.map((monthData: MonthlySalesData) => monthData.total_sales);
- 
+
     const data = {
         labels,
         datasets: [
@@ -86,8 +87,7 @@ export function BarChart() {
 
     return (
         <Card
-            className='p-0'
-            style={{ width: 'max-content' }}
+
             title="Sale Annually"
             extra={
                 <DatePicker
@@ -102,7 +102,9 @@ export function BarChart() {
                     <span className='text-black'>Total annually: </span>
                     <span className='font-semibold text-gray-900'> $ {annualTotalSales}</span>
                 </>]}>
-            <Bar className='max-w-2xl' options={options} data={data} />
+            <div className='flex justify-center items-center min-h-40  '>
+                <Bar options={options} data={data} />
+            </div>
 
 
 

@@ -106,7 +106,7 @@ const ProductTable = () => {
     }, []);
 
 
-    
+
     // Function to fetch products from the backend API
     const fetchProducts = async () => {
         try {
@@ -201,7 +201,7 @@ const ProductTable = () => {
 
             if (response.ok) {
                 const data = await response.json();
-                const imageUrl = data.data.url; 
+                const imageUrl = data.data.url;
                 return imageUrl;
             } else {
                 console.error('Failed to upload image to ImgBB');
@@ -315,26 +315,26 @@ const ProductTable = () => {
                     </Spin>
                 </Form>
             </Modal>
-            <div className="overflow-auto">
-                <div className="container px-4 my-5">
-                    <div className='flex mb-4 justify-between items-baseline'>
 
-
-                    </div>
-                    <Card
-                        title="Products"
-                        extra={
-                            <Button
-                                icon={<PlusOutlined />}
-                                type='default'
-                                onClick={showModal}>
-                                Add Product
-                            </Button>}
-                        style={{ width: 'max-content' }}>
-                        <Table className='bg-slate-100 rounded-md border' columns={columns} dataSource={products} />
-                    </Card>
+            <div>
+                <div className='flex justify-between mb-4'>
+                    <p>Inventory</p>
+                    <Button
+                        icon={<PlusOutlined />}
+                        type='default'
+                        onClick={showModal}>
+                        Add Product
+                    </Button>
                 </div>
-            </div>
+                <Table
+                    className='bg-slate-100 rounded-md border overflow-x-auto'
+                    rowKey="id"
+                    scroll={{ x: true }}
+                    columns={columns}
+                    dataSource={products} />
+            </div >
+
+
         </>
     );
 };
