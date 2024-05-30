@@ -64,10 +64,7 @@ export function BarChart() {
                 console.error('Error fetching sales data:', error);
             });
     };
-
-    if (!salesData) {
-        return <Loading />;
-    }
+ 
 
     const { annualTotalSales, monthlySales } = salesData;
 
