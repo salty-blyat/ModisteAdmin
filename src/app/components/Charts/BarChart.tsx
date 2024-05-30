@@ -1,4 +1,3 @@
-'use client'
 import { Card, DatePicker, Skeleton } from 'antd';
 import axios from 'axios';
 import {
@@ -13,12 +12,11 @@ import {
 import { Moment } from 'moment';
 import { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
-import Loading from '../Loading';
-interface MonthlySalesData {
-    month: string; // Assuming month is a string, adjust if it's a number or another type
-    total_sales: number; // Adjust the type as per your data
-}
 
+interface MonthlySalesData {
+    month: string;
+    total_sales: number;
+}
 
 ChartJS.register(
     CategoryScale,
@@ -34,27 +32,22 @@ export const options = {
 };
 
 export function BarChart() {
-    const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear()); // Default to current year
+    const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
     const [salesData, setSalesData] = useState<{ annualTotalSales: number; monthlySales: MonthlySalesData[] } | null>(null);
 
     useEffect(() => {
-        // Fetch sales data from the API whenever the year changes
         fetchSalesData(selectedYear);
-
     }, [selectedYear]);
 
     const handleYearChange = (date: Moment) => {
-        if (!date) return "No date selected";
+        if (!date) return;
         const selectedYear = date.year();
         setSelectedYear(selectedYear);
-
-        // Fetch sales data for the selected year
         fetchSalesData(selectedYear);
     };
 
-
-    const fetchSalesData = (year: number) => { // Adjust the parameter type to number
-        const GetSales = process.env.NEXT_PUBLIC_GET_SALE;
+    const fetchSalesData = (year: number) => {
+        const GetSales = process.env.NEXT_PUBLIC_GET_SALE || '';
         axios.get(`${GetSales}${year}`)
             .then(response => {
                 const { data } = response;
@@ -64,9 +57,13 @@ export function BarChart() {
                 console.error('Error fetching sales data:', error);
             });
     };
- 
 
-    const { annualTotalSales, monthlySales } = salesData;
+    // Check if salesData is not null before destructuring
+    let annualTotalSales = 0;
+    let monthlySales: MonthlySalesData[] = [];
+    if (salesData) {
+        ({ annualTotalSales, monthlySales } = salesData);
+    }
 
     const labels = monthlySales.map((monthData: MonthlySalesData) => monthData.month);
     const dataset1Data = monthlySales.map((monthData: MonthlySalesData) => monthData.total_sales);
@@ -84,7 +81,11 @@ export function BarChart() {
 
     return (
         <>
-            {salesData !== null ?
+            {!salesData ? (
+                <Card>
+                    <Skeleton active paragraph={{ rows: 7 }} />
+                </Card>
+            ) : (
                 <Card
                     title="Sale Annually"
                     extra={
@@ -100,14 +101,11 @@ export function BarChart() {
                             <span className='text-black'>Total annually: </span>
                             <span className='font-semibold text-gray-900'> $ {annualTotalSales}</span>
                         </>]}>
-                    <div className='flex justify-center items-center min-h-40  '>
+                    <div className='flex justify-center items-center min-h-40'>
                         <Bar options={options} data={data} />
                     </div>
-                </Card >
-                : <Card>
-                    <Skeleton active paragraph={{ rows: 7 }} />
                 </Card>
-            }
+            )}
         </>
     );
 }
