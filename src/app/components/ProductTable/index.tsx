@@ -18,10 +18,10 @@ const { Option } = Select;
 interface Product {
     id: number;
     name: string;
-    price: number;
+    price: number | null;
     category: string;
     description: string;
-    inStock: number;
+    inStock: number | null;
     image_url: string;
     category_name?: string; // Make it optional if necessary
 }
@@ -54,8 +54,8 @@ const columns = [
     {
         title: 'Price',
         dataIndex: 'price',
-        key: 'price',
-        sorter: (a: Product, b: Product) => a.price - b.price, // Sort function for the "ID" column
+        sorter: (a:Product, b:Product) => (a.price || 0) - (b.price || 0),
+        render: (price:number) => price !== undefined ? price.toFixed(2) : '0.00'
     },
     {
         title: 'Category',
@@ -92,7 +92,7 @@ const ProductTable = () => {
     const [uploading, setUploading] = useState(false);
     const [formData, setFormData] = useState<Omit<Product, 'id'>>({
         name: '',
-        price: 0,
+        price: 1,
         category: '',
         description: '',
         inStock: 1,
@@ -239,18 +239,20 @@ const ProductTable = () => {
                         rules={[{ required: true, message: 'Please enter the product price' }]}
                     >
                         <InputNumber
-                            min={0}
-                            step={0.01}
+                            min={1}
+                            step={1}
                             style={{ width: '100%' }}
-                            placeholder="123.45"
+                            placeholder="10"
                             value={formData.price}
                             onChange={(value) => {
                                 if (typeof value === 'number') {
                                     setFormData({ ...formData, price: value });
                                 }
                             }}
+                            onFocus={() => {
+                                setFormData({ ...formData, price: null });
+                            }}
                         />
-
                     </Form.Item>
                     <Form.Item
                         label="Category"
@@ -286,12 +288,15 @@ const ProductTable = () => {
                             min={0}
                             step={1}
                             style={{ width: '100%' }}
-                            placeholder="0"
+                            placeholder="1"
                             value={formData.inStock}
                             onChange={(value) => {
                                 if (typeof value === 'number') {
                                     setFormData({ ...formData, inStock: value });
                                 }
+                            }}
+                            onFocus={() => {
+                                setFormData({ ...formData, inStock: null });
                             }}
                         />
 
